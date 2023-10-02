@@ -6,27 +6,31 @@ public class Card {
     public static final int MAX_NUMBER = 13;
     public static final int MAX_COLOR = 4;
     public static final int NUM_CARDS = MAX_NUMBER * MAX_COLOR;
-    private final int number;
-    private final int color;
+    private final Rank rank;
+    private final Suit suit;
 
-    public Card(int number, int color) {
-        this.number = number;
-        this.color = color;
+    public Card(Rank rank, Suit suit) {
+        this.rank = rank;
+        this.suit = suit;
     }
 
-    public int getNumber() {
-        return number;
+    public Rank getRank() {
+        return rank;
     }
 
-    public int getColor() {
-        return color;
+    public Suit getSuit() {
+        return suit;
+    }
+
+    public boolean isAce() {
+        return rank.equals(Rank.ACE);
     }
 
     @Override
     public String toString() {
         return "Card{" +
-                "number=" + number +
-                ", color=" + color +
+                "rank=" + rank +
+                ", suit=" + suit +
                 '}';
     }
 
@@ -34,11 +38,6 @@ public class Card {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Card card)) return false;
-        return getNumber() == card.getNumber() && getColor() == card.getColor();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getNumber(), getColor());
+        return getRank() == card.getRank() && getSuit() == card.getSuit();
     }
 }

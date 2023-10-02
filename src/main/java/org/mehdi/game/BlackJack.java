@@ -1,29 +1,80 @@
 package org.mehdi.game;
 
-import java.util.ArrayList;
+import org.mehdi.game.utils.Response;
+
 import java.util.List;
-import java.util.Random;
 
 public class BlackJack {
     private Deck deck;
+    private Tray tray;
     private int round;
     private boolean isPlaying;
     private Player player;
 
+    private Dealer dealer;
+
     public BlackJack(Player player) {
         this.player = player;
-        round = 0;
-        isPlaying = false;
-        playedCards = new ArrayList<Card>();
-        cards = new ArrayList<Card>();
-        for (int i = 1; i <= Card.MAX_COLOR; ++i) {
-            for (int j = 1; j <= Card.MAX_NUMBER; ++j) {
-                cards.add(new Card(j, i));
-            }
+        this.dealer = new Dealer();
+        this.round = 0;
+        this.isPlaying = false;
+        this.deck = new Deck();
+        this.tray = new Tray();
+    }
+
+    public Response startRound(int bet) {
+        if (isPlaying) {
+            return new Response.Builder().valid(false).round(round).build();
+        }
+        player.addHand(bet);
+        isPlaying = true;
+        round++;
+        return new Response.Builder().valid(true).round(round).build();
+    }
+
+    private void ifEmptyMakeDeckFromTray() {
+        if (!deck.isEmpty()) {
+            return;
+        }
+        deck.addMultipleCards(tray.clear());
+        deck.shuffleCards();
+    }
+
+    private int dealCardToPlayer() {
+        ifEmptyMakeDeckFromTray();
+        Card dealedCard = deck.drawCard();
+        return player.dealCard(dealedCard);
+    }
+
+    private int dealCardToDealer() {
+        ifEmptyMakeDeckFromTray();
+        Card dealedCard = deck.drawCard();
+        return player.dealCard(dealedCard);
+    }
+
+    public Response hit() {
+        if (! isPlaying) {
+            return new Response.Builder().valid(false).round(round).build();
+        }
+        int handValue;
+        try {
+            handValue = dealCardToPlayer();
+        } catch (IllegalStateException e) {
+            return new Response.Builder().valid(false).round(round).build();
+        }
+        if (handValue > 21) {
+            player.bustHand();
+
+            return new Response.Builder()
+                    .valid(true)
+                    .round(round)
+                    .state(2)
+                    .build();
         }
     }
 
-    public void hit() {}
+    public void push() {}
+    public void doubleDown() {}
     public void stand() {}
     public void surrender() {}
     public void split() {}

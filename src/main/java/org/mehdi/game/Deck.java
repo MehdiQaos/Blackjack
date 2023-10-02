@@ -1,24 +1,23 @@
 package org.mehdi.game;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Deck {
     public List<Card> cards;
 
     public Deck() {
-        cards = new ArrayList<Card>();
-        for (int i = 1; i <= Card.MAX_COLOR; ++i) {
-            for (int j = 1; j <= Card.MAX_NUMBER; ++j) {
-                cards.add(new Card(j, i));
-            }
-        }
+        cards = Arrays.stream(Suit.values())
+              .flatMap(suit -> Arrays.stream(Rank.values()).map(rank -> new Card(rank, suit)))
+              .collect(Collectors.toList());
         shuffleCards();
     }
 
-    public List<Card> drawNcards(int n) {
+    public void addMultipleCards(List<Card> cardsToAdd) {
+        cards.addAll(cardsToAdd);
+    }
+
+    public List<Card> drawMultipleCards(int n) {
         if (n > cards.size() || n <= 0)
             return Collections.emptyList();
 
@@ -40,5 +39,9 @@ public class Deck {
             Card card = cards.remove(i);
             cards.add(index, card);
         }
+    }
+
+    public boolean isEmpty() {
+        return cards.isEmpty();
     }
 }
