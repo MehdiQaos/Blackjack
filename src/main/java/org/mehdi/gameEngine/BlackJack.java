@@ -30,7 +30,13 @@ public class BlackJack implements IBlackJack {
 
     public Response startRound(int bet) {
         if (!isNotPlaying()) {
-            return invalidResponse();
+            return invalidResponse().build();
+        }
+        if (bet <= 0) {
+            return invalidResponse().state(State.BET).build();
+        }
+        if (bet > player.getBank()) {
+            return invalidResponse().state(State.BANK).build();
         }
         clearPlayedCards();
         round++;
@@ -91,7 +97,7 @@ public class BlackJack implements IBlackJack {
 
     public Response hit() {
         if (isNotPlaying()) {
-            return invalidResponse();
+            return invalidResponse().build();
         }
         Card dealedCard;
         PlayerHand currentHand;
@@ -100,7 +106,7 @@ public class BlackJack implements IBlackJack {
             currentHand = handAndCard.first;
             dealedCard = handAndCard.second;
         } catch (IllegalStateException e) {
-            return invalidResponse();
+            return invalidResponse().build();
         }
 
         int handValue = currentHand.evaluate();
@@ -125,7 +131,7 @@ public class BlackJack implements IBlackJack {
 
     public Response stand() {
         if (isNotPlaying()) {
-            return invalidResponse();
+            return invalidResponse().build();
         }
         playDealer();
         return handleTheHand();
@@ -169,8 +175,10 @@ public class BlackJack implements IBlackJack {
     }
 
     // TODO: move this method to the Response class?
-    private Response invalidResponse() {
-        return new Response.Builder().round(round).valid(false).build();
+    private Response.Builder invalidResponse() {
+        return new Response.Builder()
+            .round(round)
+            .valid(false);
     }
 
     private Response.Builder validResponseBuilder(PlayerHand hand) {
@@ -184,15 +192,15 @@ public class BlackJack implements IBlackJack {
     }
 
     public Response doubleDown() {
-        return invalidResponse();
+        return invalidResponse().build();
     }
 
     public Response surrender() {
-        return invalidResponse();
+        return invalidResponse().build();
     }
 
     public Response split() {
-        return invalidResponse();
+        return invalidResponse().build();
     }
 
     public static boolean insertCard(List<Card> cards, Card cardToInsert, int index) {
