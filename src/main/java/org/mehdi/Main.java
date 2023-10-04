@@ -1,11 +1,16 @@
 package org.mehdi;
 
+import org.mehdi.game.BlackJack;
 import org.mehdi.game.Deck;
+import org.mehdi.game.Player;
 import org.mehdi.game.Suit;
+import org.mehdi.game.utils.Response;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Suit s = Suit.DIAMONDS;
+        test2();
 //        test();
 //        var cards = nextCardsList(new Card(1, 2));
 //        shuffleCards(cards);
@@ -20,6 +25,34 @@ public class Main {
 //        while (true) {
 //
 //        }
+    }
+    public static void test2() {
+        int bank = 1000;
+        String name = "mehdi";
+        Player player = new Player(bank, name);
+        BlackJack blackJack = new BlackJack(player);
+        Response response = blackJack.startRound(50);
+//        response = blackJack.hit();
+        System.out.println(response);
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.print("give choice (1.hit, 2.stand): ");
+            int input = scanner.nextInt();
+            switch (input) {
+                case 1 -> {
+                    response = blackJack.hit();
+                    System.out.println(response);
+                }
+                case 2 -> {
+                    response = blackJack.stand();
+                    System.out.println(response);
+                }
+                case 3 -> {
+                    response = blackJack.startRound(50);
+                    System.out.println(response);
+                }
+            }
+        }
     }
 
 //    public static List<Card> nextCardsList(Card startingCard) {

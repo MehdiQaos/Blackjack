@@ -4,19 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Dealer {
-    private List<Card> hand;
-
-    public Dealer() {
-        hand = new ArrayList<>();
-    }
-
-    public void addCard(Card newCard) {
-        hand.add(newCard);
-    }
-
-    public List<Card> clearHand() {
-        List<Card> discardedCards = new ArrayList<>(hand);
-        hand.clear();
-        return discardedCards;
-    }
+//    private DealerHand hand;
+//
+//    public Dealer() {
+//        hand = new DealerHand();
+//    }
+//
+//    public void addCard(Card newCard) {
+//        hand.add(newCard);
+//    }
+//
+//    public List<Card> clearHand() {
+//        List<Card> discardedCards = new ArrayList<>(hand);
+//        hand.clear();
+//        return discardedCards;
+//    }
+//
+//    public List<Card> getHand() {
+//        return hand;
+//    }
 }

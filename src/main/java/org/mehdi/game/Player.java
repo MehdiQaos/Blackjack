@@ -1,12 +1,15 @@
 package org.mehdi.game;
 
+import org.mehdi.game.utils.Response;
+import org.mehdi.game.enumerations.State;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
     private int bank;
     private String name;
-    private List<Hand> hands;
+    private List<PlayerHand> hands;
 
     public Player(int bank, String name) {
         this.bank = bank;
@@ -14,26 +17,47 @@ public class Player {
         hands = new ArrayList<>();
     }
 
-    public void addHand(int bet) {
+    public PlayerHand addHand(int bet) {
         if (bet > bank) {
-            return;
+            return null;
         }
         bank -= bet;
-        Hand newHand = new Hand(bet);
+        PlayerHand newHand = new PlayerHand(bet);
         hands.add(newHand);
+        return newHand;
     }
 
-    public int dealCard(Card newCard) {
-        Hand currentHand = nextActiveHand();
+    public Response hit(Card newCard, int round) {
+        PlayerHand currentHand = dealCard(newCard);
+        int handValue = currentHand.evaluate();
+        Response.Builder builder = new Response.Builder()
+                .valid(true)
+                .round(round);
+        if (handValue > 21) {
+            currentHand.deactivate();
+            return builder.state(State.BUST)
+                .playerCards(currentHand.getCards())
+                .build();
+        } else if (handValue == 21) {
+            currentHand.deactivate();
+            builder.state(State.BLACKJACK);
+        }
+        return builder.state(State.PLAYING)
+                .playerCards(currentHand.getCards())
+                .build();
+    }
+
+    public PlayerHand dealCard(Card newCard) {
+        PlayerHand currentHand = currentHand();
         if (currentHand == null) {
             throw new IllegalStateException("No active hand available to deal a card.");
         }
         currentHand.add(newCard);
-        return currentHand.evaluate();
+        return currentHand;
     }
 
     public void bustHand() {
-        Hand currentHand = nextActiveHand();
+        PlayerHand currentHand = currentHand();
         if (currentHand == null) {
             throw new IllegalStateException("No active hand available to bust.");
         }
@@ -41,19 +65,19 @@ public class Player {
     }
 
     public boolean checkCurrentHand() {
-        Hand currentHand = nextActiveHand();
+        PlayerHand currentHand = currentHand();
         return currentHand != null;
     }
 
     public void dealCardToHand(Card card, int handNumber) {
         int handIndex = handNumber - 1;
-        Hand hand = hands.get(handIndex);
+        PlayerHand hand = hands.get(handIndex);
         hand.add(card);
     }
 
-    public Hand nextActiveHand() {
+    public PlayerHand currentHand() {
         // TODO: use streams api
-        for (Hand hand: hands) {
+        for (PlayerHand hand: hands) {
             if (hand.isActive()) {
                 return hand;
             }
@@ -90,11 +114,18 @@ public class Player {
         this.bank = bank;
     }
 
+    public void adjustBankBy(int money) {
+        if (-money > bank) {
+            throw new IllegalArgumentException("money not enough in the bank");
+        }
+        bank += money;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public List<Hand> getHands() {
+    public List<PlayerHand> getHands() {
         return hands;
     }
 }
