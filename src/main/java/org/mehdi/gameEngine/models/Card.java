@@ -1,6 +1,7 @@
-package org.mehdi.game;
+package org.mehdi.gameEngine.models;
 
-import java.util.Objects;
+import org.mehdi.gameEngine.enumerations.Rank;
+import org.mehdi.gameEngine.enumerations.Suit;
 
 public class Card {
     public static final int MAX_NUMBER = 13;

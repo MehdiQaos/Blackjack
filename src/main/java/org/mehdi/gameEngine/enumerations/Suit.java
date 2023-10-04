@@ -1,4 +1,6 @@
-package org.mehdi.game;
+package org.mehdi.gameEngine.enumerations;
+
+import org.mehdi.gameEngine.enumerations.Color;
 
 public enum Suit {
     SPADES("Spades", 's', Color.BLACK),

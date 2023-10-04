@@ -1,4 +1,4 @@
-package org.mehdi.game;
+package org.mehdi.gameEngine.models;
 
 import java.util.ArrayList;
 import java.util.List;

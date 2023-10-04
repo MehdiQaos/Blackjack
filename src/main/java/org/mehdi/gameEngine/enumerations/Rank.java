@@ -1,4 +1,4 @@
-package org.mehdi.game;
+package org.mehdi.gameEngine.enumerations;
 
 public enum Rank {
     ACE(11), DEUCE(2), THREE(3), FOUR(4), FIVE(5),

@@ -1,12 +1,11 @@
-package org.mehdi;
+package org.mehdi.game;
 
-import org.mehdi.game.BlackJack;
-import org.mehdi.game.Deck;
-import org.mehdi.game.Player;
-import org.mehdi.game.Suit;
-import org.mehdi.game.utils.Response;
+import org.mehdi.gameEngine.BlackJack;
+import org.mehdi.gameEngine.IBlackJack;
+import org.mehdi.gameEngine.models.Deck;
+import org.mehdi.gameEngine.models.Player;
+import org.mehdi.gameEngine.utils.Response;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -36,7 +35,7 @@ public class Main {
         int bank = 1000;
         String name = "mehdi";
         Player player = new Player(bank, name);
-        BlackJack blackJack = new BlackJack(player);
+        IBlackJack blackJack = new BlackJack(player);
         Response response = blackJack.startRound(50);
         System.out.println(response);
         Scanner scanner = new Scanner(System.in);

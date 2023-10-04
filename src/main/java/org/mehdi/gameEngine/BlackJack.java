@@ -1,13 +1,14 @@
-package org.mehdi.game;
+package org.mehdi.gameEngine;
 
-import org.mehdi.game.enumerations.Result;
-import org.mehdi.game.utils.Pair;
-import org.mehdi.game.utils.Response;
-import org.mehdi.game.enumerations.State;
+import org.mehdi.gameEngine.enumerations.Result;
+import org.mehdi.gameEngine.utils.Pair;
+import org.mehdi.gameEngine.utils.Response;
+import org.mehdi.gameEngine.enumerations.State;
+import org.mehdi.gameEngine.models.*;
 
 import java.util.List;
 
-public class BlackJack {
+public class BlackJack implements IBlackJack {
     private final Deck deck;
     private final Tray tray;
     private int round;
@@ -182,13 +183,16 @@ public class BlackJack {
             .dealerEvaluation(dealerHand.evaluate());
     }
 
-    public void doubleDown() {
+    public Response doubleDown() {
+        return invalidResponse();
     }
 
-    public void surrender() {
+    public Response surrender() {
+        return invalidResponse();
     }
 
-    public void split() {
+    public Response split() {
+        return invalidResponse();
     }
 
     public static boolean insertCard(List<Card> cards, Card cardToInsert, int index) {

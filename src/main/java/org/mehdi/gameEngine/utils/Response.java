@@ -1,8 +1,8 @@
-package org.mehdi.game.utils;
+package org.mehdi.gameEngine.utils;
 
-import org.mehdi.game.Card;
-import org.mehdi.game.enumerations.Result;
-import org.mehdi.game.enumerations.State;
+import org.mehdi.gameEngine.models.Card;
+import org.mehdi.gameEngine.enumerations.Result;
+import org.mehdi.gameEngine.enumerations.State;
 
 import java.util.List;
 

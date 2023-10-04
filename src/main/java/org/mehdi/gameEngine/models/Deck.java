@@ -1,6 +1,7 @@
-package org.mehdi.game;
+package org.mehdi.gameEngine.models;
 
-import org.mehdi.game.utils.Pair;
+import org.mehdi.gameEngine.enumerations.Rank;
+import org.mehdi.gameEngine.enumerations.Suit;
 
 import java.util.*;
 import java.util.stream.Collectors;

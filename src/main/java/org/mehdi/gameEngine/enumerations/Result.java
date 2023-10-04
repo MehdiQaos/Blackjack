@@ -1,4 +1,4 @@
-package org.mehdi.game.enumerations;
+package org.mehdi.gameEngine.enumerations;
 
 public enum Result {
     WIN, LOSE, DRAW

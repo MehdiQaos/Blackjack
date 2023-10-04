@@ -1,4 +1,4 @@
-package org.mehdi.game.utils;
+package org.mehdi.gameEngine.utils;
 
 public class Pair<A, B> {
     public A first;

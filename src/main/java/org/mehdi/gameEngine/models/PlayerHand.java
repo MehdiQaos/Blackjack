@@ -1,4 +1,4 @@
-package org.mehdi.game;
+package org.mehdi.gameEngine.models;
 
 public class PlayerHand extends Hand{
     private int bet;
