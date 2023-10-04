@@ -6,11 +6,17 @@ import org.mehdi.game.Player;
 import org.mehdi.game.Suit;
 import org.mehdi.game.utils.Response;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         test2();
+// //        pioche test
+//        Deck deck = new Deck();
+//        var piq = deck.pioche();
+//        System.out.println(piq.first.size());
+//        System.out.println(piq.second);
 //        test();
 //        var cards = nextCardsList(new Card(1, 2));
 //        shuffleCards(cards);
@@ -32,7 +38,6 @@ public class Main {
         Player player = new Player(bank, name);
         BlackJack blackJack = new BlackJack(player);
         Response response = blackJack.startRound(50);
-//        response = blackJack.hit();
         System.out.println(response);
         Scanner scanner = new Scanner(System.in);
         while (true) {

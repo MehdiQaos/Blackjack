@@ -1,5 +1,7 @@
 package org.mehdi.game;
 
+import org.mehdi.game.utils.Pair;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,13 +35,25 @@ public class Deck {
     }
 
     public void shuffleCards() {
-        Random random = new Random();
-        for (int i = 0; i < 52; i++) {
-            int index = random.nextInt(0, cards.size());
-            Card card = cards.remove(i);
-            cards.add(index, card);
-        }
+        Collections.shuffle(cards);
+//        Random random = new Random();
+//        int size = cards.size();
+//        for (int i = 0; i < size; i++) {
+//            int i1 = random.nextInt(0, size);
+//            int i2 = random.nextInt(0, size);
+//            Card temp = cards.get(i1);
+//            cards.set(i1, cards.get(i2));
+//            cards.set(i2, temp);
+//        }
     }
+
+//    public Pair<List<Card>, List<Card>> pioche() {
+//        Random random = new Random();
+//        int index = random.nextInt(0, cards.size());
+//        List<Card> discardedCards = cards.subList(index, cards.size());
+//        cards.removeAll(discardedCards);
+//        return new Pair<>(cards, new ArrayList<>(discardedCards));
+//    }
 
     public boolean isEmpty() {
         return cards.isEmpty();

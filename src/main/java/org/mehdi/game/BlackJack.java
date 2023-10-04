@@ -21,7 +21,6 @@ public class BlackJack {
         this.round = 0;
         this.deck = new Deck();
         this.tray = new Tray();
-        // TODO: pioche
     }
 
     public boolean isNotPlaying() {
@@ -36,12 +35,12 @@ public class BlackJack {
         round++;
         PlayerHand playerHand = initialDeal(bet);
         if (playerHand.evaluate() == 21 || dealerHand.evaluate() == 21) {
-            return handleFirstDealBlackJack(playerHand);
+            return handleInitialDealBlackJack(playerHand);
         }
         return validResponseBuilder(playerHand).state(State.PLAYING).build();
     }
 
-    private Response handleFirstDealBlackJack(PlayerHand playerHand) {
+    private Response handleInitialDealBlackJack(PlayerHand playerHand) {
         int dealerHandValue = dealerHand.evaluate();
         int playerHandValue = playerHand.evaluate();
         var responseBuilder = validResponseBuilder(playerHand).state(State.BLACKJACK);
@@ -89,7 +88,6 @@ public class BlackJack {
         return card;
     }
 
-    // TODO: should hitting and getting blackjack and winning, return state blackjack or bigger?
     public Response hit() {
         if (isNotPlaying()) {
             return invalidResponse();
@@ -108,30 +106,31 @@ public class BlackJack {
         Response.Builder responseBuilder = validResponseBuilder(currentHand);
 
         if (handValue > 21) {
-            currentHand.deactivate();
-            responseBuilder.state(State.BUST).result(Result.LOSE);
-            clearPlayedCards();
+            return handleTheHand();
         } else if (handValue == 21) {
-            return handleTheThing();
+            playDealer();
+            return handleTheHand();
         } else {
             responseBuilder.state(State.PLAYING);
         }
         return responseBuilder.build();
     }
 
-    public int playDealer() {
-        while (dealerHand.evaluate() < 21)
+    public void playDealer() {
+        while (dealerHand.evaluate() < 17) {
             dealCardToDealer();
-        return dealerHand.evaluate();
+        }
     }
 
     public Response stand() {
         if (isNotPlaying()) {
             return invalidResponse();
         }
-        return handleTheThing();
+        playDealer();
+        return handleTheHand();
     }
 
+    // TODO: find better name
     private Response handleTheHand() {
         PlayerHand playerHand = player.currentHand();
         int playerHandValue = playerHand.evaluate();
@@ -158,29 +157,6 @@ public class BlackJack {
 
         playerHand.deactivate();
         clearPlayedCards(); // if no more hands
-        return responseBuilder.build();
-    }
-
-    // TODO: find better name
-    private Response handleTheThing() {
-        PlayerHand currentHand = player.currentHand();
-        currentHand.deactivate();
-        int playerHandValue = currentHand.evaluate();
-        int dealerHandValue = playDealer();
-
-        var responseBuilder = validResponseBuilder(currentHand);
-        if (dealerHandValue > 21) {
-            player.adjustBankBy(currentHand.getBet() * 2);
-            responseBuilder.state(State.BUST).result(Result.WIN);
-        } else if (dealerHandValue < playerHandValue) {
-            player.adjustBankBy(currentHand.getBet() * 2);
-            responseBuilder.state(State.BIGGER).result(Result.WIN);
-        } else {
-            player.adjustBankBy(-currentHand.getBet() * 2);
-            responseBuilder.state(State.BIGGER).result(Result.LOSE);
-        }
-
-        clearPlayedCards();
         return responseBuilder.build();
     }
 
