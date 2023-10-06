@@ -1,18 +1,16 @@
 package org.mehdi.gameEngine.enumerations;
 
-import org.mehdi.gameEngine.enumerations.Color;
-
 public enum Suit {
-    SPADES("Spades", 's', Color.BLACK),
-    CLUBS("Clubs", 'c', Color.BLACK),
-    DIAMONDS("Diamonds", 'd', Color.RED),
-    HEARTS("Hearts", 'h', Color.RED);
+    SPADES("Spades", '♠', Color.BLACK),
+    CLUBS("Clubs", '♣', Color.BLACK),
+    DIAMONDS("Diamonds", '♦', Color.RED),
+    HEARTS("Hearts", '♥', Color.RED);
 
     private final String name;
     private final Color color;
     private final char symbol;
 
-    private Suit(String name, char symbol, Color color) {
+    Suit(String name, char symbol, Color color) {
         this.name = name;
         this.color = color;
         this.symbol = symbol;

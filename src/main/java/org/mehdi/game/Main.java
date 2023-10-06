@@ -7,10 +7,12 @@ import org.mehdi.gameEngine.models.Player;
 import org.mehdi.gameEngine.utils.Response;
 
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
-        test2();
+        test3();
+//        test2();
 // //        pioche test
 //        Deck deck = new Deck();
 //        var piq = deck.pioche();
@@ -100,6 +102,11 @@ public class Main {
 //            cards.add(0, card);
 //        }
 //    }
+
+    private static void test3() {
+        ConsoleGame consoleGame = new ConsoleGame();
+        consoleGame.run();
+    }
 
     private static void test() {
 //        var cards = BlackJack.nextCardsList(new Card(12, 3));

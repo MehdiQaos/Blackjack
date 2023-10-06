@@ -9,4 +9,5 @@ public interface IBlackJack {
     public Response surrender();
     public Response split();
     public Response doubleDown();
+    public int getBank();
 }

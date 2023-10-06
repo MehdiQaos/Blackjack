@@ -56,8 +56,8 @@ public class Response {
     public static class Builder {
         private boolean valid;
         private int round;
-        private State state;
-        private Result result;
+        private State state = State.NULL;
+        private Result result = Result.NULL;
         private int playerEvaluation;
         private int dealerEvaluation;
         private List<Card> playerCards;

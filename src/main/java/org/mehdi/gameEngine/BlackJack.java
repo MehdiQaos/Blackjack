@@ -15,6 +15,7 @@ public class BlackJack implements IBlackJack {
     private final Player player;
 
     private final DealerHand dealerHand;
+    private boolean hideFirstCard;
 
     public BlackJack(Player player) {
         this.player = player;
@@ -38,6 +39,7 @@ public class BlackJack implements IBlackJack {
         if (bet > player.getBank()) {
             return invalidResponse().state(State.BANK).build();
         }
+        hideFirstCard = true;
         clearPlayedCards();
         round++;
         PlayerHand playerHand = initialDeal(bet);
@@ -48,6 +50,7 @@ public class BlackJack implements IBlackJack {
     }
 
     private Response handleInitialDealBlackJack(PlayerHand playerHand) {
+        hideFirstCard = false;
         int dealerHandValue = dealerHand.evaluate();
         int playerHandValue = playerHand.evaluate();
         var responseBuilder = validResponseBuilder(playerHand).state(State.BLACKJACK);
@@ -139,6 +142,7 @@ public class BlackJack implements IBlackJack {
 
     // TODO: find better name
     private Response handleTheHand() {
+        hideFirstCard = false;
         PlayerHand playerHand = player.currentHand();
         int playerHandValue = playerHand.evaluate();
         int dealerHandValue = dealerHand.evaluate();
@@ -174,10 +178,15 @@ public class BlackJack implements IBlackJack {
         tray.addCards(dealerHand.clearHand());
     }
 
+    public int getBank() {
+        return player.getBank();
+    }
+
     // TODO: move this method to the Response class?
     private Response.Builder invalidResponse() {
         return new Response.Builder()
             .round(round)
+            .result(Result.NULL)
             .valid(false);
     }
 
@@ -185,10 +194,17 @@ public class BlackJack implements IBlackJack {
         return new Response.Builder()
             .valid(true)
             .round(round)
+            .result(Result.NULL)
+            .state(State.NULL)
             .playerCards(hand.getCards())
-            .dealerCards(dealerHand.getCards())
+            .dealerCards(hideFirstCard())
             .playerEvaluation(hand.evaluate())
             .dealerEvaluation(dealerHand.evaluate());
+    }
+
+    private List<Card> hideFirstCard() {
+        var cards = dealerHand.getCards();
+        return hideFirstCard ? cards.subList(1, 2) : cards;
     }
 
     public Response doubleDown() {

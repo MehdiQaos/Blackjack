@@ -1,5 +1,5 @@
 package org.mehdi.gameEngine.enumerations;
 
 public enum Result {
-    WIN, LOSE, DRAW
+    WIN, LOSE, DRAW, NULL
 }
